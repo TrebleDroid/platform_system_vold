@@ -351,6 +351,7 @@ static bool prepare_dir_with_policy(const std::string& dir, mode_t mode, uid_t u
 static bool destroy_dir(const std::string& dir) {
     LOG(DEBUG) << "Destroying: " << dir;
     if (rmdir(dir.c_str()) != 0 && errno != ENOENT) {
+        if(unlink(dir.c_str()) == 0) return true;
         PLOG(ERROR) << "Failed to destroy " << dir;
         return false;
     }
